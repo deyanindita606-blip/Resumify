@@ -6,11 +6,220 @@
 <title>Resumify | Resume and CV builder</title>
 <meta name="description" content="Build an ATS-friendly resume or CV with or without a photo. Pick a layout, set your colours and download as PDF, Word or HTML. Your details never leave your browser.">
 <meta name="theme-color" content="#2E4A62">
-<link rel="icon" type="image/svg+xml" href="assets/favicon.svg">
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAzMiAzMiI+PHJlY3Qgd2lkdGg9IjMyIiBoZWlnaHQ9IjMyIiByeD0iNiIgZmlsbD0iIzJFNEE2MiIvPjxwYXRoIGZpbGwtcnVsZT0iZXZlbm9kZCIgZD0iTTEwLjUgOGg2LjRhNC42IDQuNiAwIDAgMSAxLjkgOC44TDIyLjIgMjRoLTQuM2wtMi45LTYuNGgtLjJWMjRoLTR6TTE0LjggMTEuNHYzLjJoMmExLjYgMS42IDAgMCAwIDAtMy4yeiIgZmlsbD0iI0YzRjVGNyIvPjwvc3ZnPgo=">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Schibsted+Grotesk:wght@400;500;600;700&family=Source+Sans+3:wght@400;500;700&family=Source+Serif+4:wght@400;700&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="assets/css/styles.css">
+<style>
+/* Resumify UI. Palette: slate blue, ink, mist and pine. No bright or neon colours. */
+:root{
+  --ink:#16212B;--primary:#2E4A62;--primary-d:#223A4E;--pine:#2F5D55;
+  --mist:#E9EDF0;--desk:#D5DCE2;--card:#FFFFFF;--line:#CFD6DC;--muted:#58636D;--focus:#3F6E94;
+  --r:6px;
+  color-scheme:light;
+  box-sizing:border-box;
+  padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px);
+}
+*,*::before,*::after{box-sizing:inherit}
+html{scroll-padding-top:env(safe-area-inset-top,0px);overflow-x:hidden;-webkit-text-size-adjust:100%;text-size-adjust:100%}
+[hidden]{display:none!important}
+body{margin:0;background:var(--mist);color:var(--ink);font:16px/1.6 'Schibsted Grotesk',system-ui,-apple-system,'Segoe UI',sans-serif;overflow-x:hidden;-webkit-font-smoothing:antialiased}
+h1,h2,h3,h4{font-family:inherit;margin:0;line-height:1.15;letter-spacing:-.01em}
+a{color:var(--primary);text-underline-offset:3px}
+:focus-visible{outline:2px solid var(--focus);outline-offset:2px}
+.wrap{max-width:1320px;margin:0 auto;padding:0 28px}
+
+/* Header */
+.top{background:var(--card);border-bottom:1px solid var(--line)}
+.top-in{display:flex;justify-content:space-between;align-items:center;gap:12px;min-height:64px}
+.logo{display:inline-flex;align-items:center;gap:10px;font-weight:700;font-size:19px;color:var(--ink);text-decoration:none;letter-spacing:-.01em}
+.logo.sm{font-size:16px}
+.mark{display:grid;place-items:center;width:28px;height:28px;border-radius:5px;background:var(--primary);color:#fff;font:700 16px 'Source Serif 4',Georgia,serif}
+
+/* Buttons */
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;min-height:42px;padding:0 20px;border:1.5px solid var(--primary);border-radius:var(--r);background:transparent;color:var(--primary);font:600 15px 'Schibsted Grotesk',system-ui,sans-serif;cursor:pointer;transition:background-color .15s,color .15s,border-color .15s}
+.btn:hover{background:rgba(46,74,98,.08)}
+.btn:active{transform:translateY(1px)}
+.btn.primary{background:var(--primary);color:#fff}
+.btn.primary:hover{background:var(--primary-d);border-color:var(--primary-d)}
+.btn.quiet{border-color:transparent}
+.btn.quiet:hover{background:rgba(46,74,98,.08)}
+.btn.lg{min-height:50px;padding:0 28px;font-size:16px}
+.btn.sm{min-height:36px;padding:0 14px;font-size:14px}
+
+/* Home */
+.hero{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,460px);gap:72px;align-items:center;padding:72px 28px 64px}
+.hero h1{font-size:clamp(34px,4.6vw,56px);font-weight:700;max-width:15em;text-wrap:balance}
+.hero p{max-width:34em;font-size:18px;color:var(--muted);margin:22px 0 32px}
+.hero-actions{display:flex;align-items:center;gap:20px;flex-wrap:wrap}
+.note{color:var(--muted);font-size:14px}
+.stack{position:relative;margin:0 14px 14px 0}
+.stack::before,.stack::after{content:"";position:absolute;inset:0;border:1px solid var(--line);border-radius:4px;background:#F6F8F9}
+.stack::before{transform:translate(14px,14px);background:var(--desk)}
+.stack::after{transform:translate(7px,7px)}
+.sheet{position:relative;z-index:1;height:560px;overflow:hidden;background:#fff;border:1px solid var(--line);border-radius:4px;box-shadow:0 18px 40px rgba(22,33,43,.14)}
+.pvin{position:absolute;top:0;left:0;width:794px;transform-origin:top left}
+.facts{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:0;margin:0 0 72px;border-top:1px solid var(--ink)}
+.facts>div{padding:22px 28px 0 0}
+.facts dt{font-weight:700;font-size:17px;margin-bottom:6px}
+.facts dd{margin:0;color:var(--muted);font-size:15px;max-width:22em}
+
+/* Format */
+.page-head{padding:64px 0 32px}
+.page-head h1{font-size:clamp(30px,4vw,44px)}
+.page-head p{color:var(--muted);max-width:36em;margin:12px 0 0;font-size:17px}
+.formats{display:grid;grid-template-columns:1fr 1fr;gap:20px;padding-bottom:72px}
+.format{display:flex;gap:26px;align-items:center;text-align:left;padding:28px;background:var(--card);border:1.5px solid var(--line);border-radius:var(--r);font:inherit;color:inherit;cursor:pointer;transition:border-color .15s,background-color .15s}
+.format:hover{border-color:var(--primary);background:#F8FAFB}
+.format-body strong{display:block;font-size:21px;margin-bottom:6px}
+.format-body span{color:var(--muted)}
+.mini{flex:none;width:92px;height:122px;padding:12px 11px;background:#fff;border:1px solid var(--line);box-shadow:3px 3px 0 var(--desk);display:grid;align-content:start;gap:7px;position:relative}
+.mini i{display:block;height:5px;background:var(--desk);border-radius:2px}
+.mini .l1{height:8px;width:60%;background:var(--primary)}
+.mini .l1.s{margin-left:34px;width:40%}
+.mini .l2{width:80%}.mini .l3{width:100%;height:3px}
+.mini .pic{position:absolute;top:10px;left:11px;width:24px;height:24px;border-radius:50%;background:var(--desk);border:2px solid var(--primary);height:24px}
+.mini .pic+.l1{margin-top:2px}.mini .pic~.l2{margin-top:14px}
+
+/* Builder */
+.app{display:grid;grid-template-columns:minmax(0,500px) minmax(0,1fr);gap:36px;padding:32px 28px 56px;align-items:start}
+.panel{background:var(--card);border:1px solid var(--line);border-radius:var(--r)}
+.stepper{list-style:none;margin:0;padding:0;display:flex;border-bottom:1px solid var(--line);overflow-x:auto}
+.stepper li{flex:1 0 auto}
+.stepper button{width:100%;display:flex;align-items:center;justify-content:center;gap:8px;padding:14px 12px;border:0;border-bottom:3px solid transparent;margin-bottom:-1px;background:none;color:var(--muted);font:500 14px 'Schibsted Grotesk',sans-serif;cursor:pointer;white-space:nowrap}
+.stepper button:hover{color:var(--ink)}
+.stepper .n{display:grid;place-items:center;width:22px;height:22px;border-radius:50%;border:1.5px solid currentColor;font-size:12px;font-weight:600}
+.stepper .on{color:var(--primary);border-bottom-color:var(--primary);font-weight:700}
+.stepper .done .n{background:var(--pine);border-color:var(--pine);color:#fff}
+.stepper .lb{display:none}.stepper .on .lb{display:inline}
+.fm{padding:26px 26px 6px}
+.fm h2{font-size:22px;margin-bottom:6px}
+.fm h2.sub{font-size:18px;margin:28px 0 12px}
+.hint{color:var(--muted);font-size:14px;margin:0 0 18px}
+.fld{display:block;margin-bottom:16px}
+.fld>span{display:block;font-size:14px;font-weight:600;margin-bottom:5px}
+input,textarea,select{display:block;width:100%;padding:10px 12px;border:1px solid #AEB8C0;border-radius:var(--r);background:#fff;color:var(--ink);font:16px 'Schibsted Grotesk',system-ui,sans-serif;transition:border-color .15s,box-shadow .15s}
+input:focus,textarea:focus{outline:none;border-color:var(--primary);box-shadow:0 0 0 3px rgba(63,110,148,.2)}
+textarea{min-height:92px;resize:vertical;line-height:1.5}
+input[type=file]{padding:8px;font-size:14px}
+input[type=color]{height:44px;padding:3px;cursor:pointer}
+.row2{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.item{border:1px solid var(--line);border-left:3px solid var(--primary);border-radius:var(--r);padding:16px 16px 2px;margin-bottom:16px;background:#FAFBFC}
+.item-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:10px}
+.item-head b{font-size:14px}
+.rm{background:none;border:0;color:#8A2F3C;font:600 14px 'Schibsted Grotesk',sans-serif;cursor:pointer;text-decoration:underline;text-underline-offset:3px;padding:4px}
+.actions{display:flex;justify-content:space-between;gap:12px;padding:18px 26px 24px;border-top:1px solid var(--line);margin-top:14px}
+.chips{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:8px}
+.chip{border:1px solid #AEB8C0;background:#fff;padding:8px 14px;border-radius:var(--r);font:500 14px 'Schibsted Grotesk',sans-serif;color:var(--ink);cursor:pointer;transition:background-color .15s,border-color .15s}
+.chip:hover{border-color:var(--primary)}
+.chip.on{background:var(--primary);border-color:var(--primary);color:#fff}
+.swatches{display:flex;gap:10px;margin:2px 0 8px}
+.sw{width:30px;height:30px;border-radius:50%;border:2px solid #fff;box-shadow:0 0 0 1px #AEB8C0;cursor:pointer;padding:0}
+.sw.on{box-shadow:0 0 0 2px var(--ink)}
+.dl{display:flex;flex-wrap:wrap;gap:10px;margin-bottom:12px}
+.small{color:var(--muted);font-size:14px;margin:0 0 6px}
+.linkbtn{background:none;border:0;padding:0;color:var(--primary);font:600 14px 'Schibsted Grotesk',sans-serif;text-decoration:underline;text-underline-offset:3px;cursor:pointer}
+.photo-row{display:flex;gap:12px;align-items:center;justify-content:space-between;margin:-8px 0 16px}
+
+/* Preview */
+.preview{position:sticky;top:16px}
+.pv-head{display:flex;justify-content:space-between;font-size:14px;color:var(--muted);margin-bottom:8px;padding:0 2px}
+.pv-frame{background:var(--desk);border-radius:var(--r);padding:20px;border:1px solid var(--line)}
+#fit{position:relative;width:100%;overflow:hidden;background:#fff;box-shadow:0 12px 30px rgba(22,33,43,.18)}
+
+/* Footer */
+footer{border-top:1px solid var(--line);background:var(--card);padding:28px 0}
+.foot{display:flex;justify-content:space-between;gap:28px;flex-wrap:wrap;color:var(--muted);font-size:14px;overflow-wrap:anywhere}
+.foot p{margin:8px 0 0;max-width:460px}
+.foot a{font-weight:600}
+
+/* Privacy gate */
+#gate{position:fixed;inset:0;z-index:50;background:rgba(22,33,43,.55);display:flex;align-items:center;justify-content:center;padding:16px}
+body.lock #gate{background:var(--mist)}
+body.lock>*:not(#gate):not(script){display:none!important}
+.dlg{background:#fff;border:1px solid var(--line);border-radius:10px;max-width:680px;width:100%;max-height:90vh;display:flex;flex-direction:column;padding:28px;box-shadow:0 24px 60px rgba(22,33,43,.22)}
+.dlg h2{font-size:26px}
+.dlg .pt{overflow:auto;margin:14px 0;padding-right:8px;font-size:15px}
+.pt h4{font-size:15px;margin:16px 0 4px}.pt p{margin:0 0 6px}.pt ul{margin:0 0 6px;padding-left:20px}.pt li{margin-bottom:4px}
+.dlg .sm{color:var(--muted);font-size:14px;margin:6px 0 0}
+.dlg .btns{display:flex;justify-content:flex-end;gap:10px}
+
+/* Responsive */
+.panel,.preview,.stack,.sheet,.pv-frame,#fit,.fm,.hero>*{min-width:0;max-width:100%}
+.pvin{max-width:none}
+@media(max-width:1100px){.app{grid-template-columns:minmax(0,1fr)}.preview{position:static}.hero{gap:48px}.facts{grid-template-columns:repeat(2,minmax(0,1fr));row-gap:12px}}
+@media(max-width:860px){.hero{grid-template-columns:minmax(0,1fr);padding-top:44px}.sheet{height:420px}.formats{grid-template-columns:minmax(0,1fr)}.stack{max-width:460px}}
+@media(max-width:700px){
+  .app{padding-top:20px;padding-bottom:40px;gap:20px}
+  .hero{padding-bottom:40px}
+  .hero p{font-size:17px;margin:18px 0 26px}
+  .facts{margin-bottom:48px}
+  .formats{gap:14px;padding-bottom:48px}
+  .dl .btn{flex:1 1 140px}
+}
+@media(max-width:560px){
+  .wrap{padding-left:16px;padding-right:16px}
+  .hero,.app{padding-left:16px;padding-right:16px}
+  .top-in{min-height:56px}
+  .logo{font-size:18px}
+  .top .btn.quiet{min-height:44px;padding:0 12px}
+  .hero{gap:32px;padding-top:32px}
+  .hero h1{font-size:clamp(28px,8.4vw,36px)}
+  .hero-actions{flex-direction:column;align-items:stretch;gap:12px}
+  .hero-actions .btn{width:100%}
+  .hero-actions .note{text-align:center}
+  .sheet{height:300px}
+  .stack{margin-right:10px;margin-bottom:10px}
+  .stack::before{transform:translate(10px,10px)}
+  .stack::after{transform:translate(5px,5px)}
+  .row2{grid-template-columns:minmax(0,1fr);gap:0}
+  .facts{grid-template-columns:minmax(0,1fr)}
+  .facts>div{padding-right:0}
+  .page-head{padding:36px 0 22px}
+  .format{flex-direction:column;align-items:flex-start;padding:20px;gap:18px}
+  .format-body strong{font-size:19px}
+  .fm{padding:20px 16px 4px}
+  .fm h2{font-size:20px}
+  .actions{padding:14px 16px 18px}
+  .actions .btn{flex:1;min-height:46px}
+  .stepper button{padding:12px 10px}
+  .btn.sm,.chip,.rm,.linkbtn{min-height:44px}
+  .chip{display:inline-flex;align-items:center}
+  .sw{width:36px;height:36px}
+  .swatches{flex-wrap:wrap}
+  .photo-row{flex-wrap:wrap}
+  .item{padding:14px 12px 2px}
+  .pv-frame{padding:8px}
+  .pv-head{flex-wrap:wrap;gap:4px}
+  .foot{flex-direction:column;gap:16px}
+  #gate{padding:10px;align-items:flex-end}
+  .dlg{padding:20px 16px;max-height:92vh;max-height:92dvh;border-radius:10px 10px 0 0}
+  .dlg h2{font-size:22px}
+  .dlg .btns{flex-direction:column-reverse}
+  .dlg .btns .btn{width:100%;min-height:46px}
+}
+@media(max-width:360px){
+  .wrap,.hero,.app{padding-left:12px;padding-right:12px}
+  .stepper button{padding:12px 8px;gap:6px}
+}
+
+/* Print: only the resume paper */
+@media print{
+  *{-webkit-print-color-adjust:exact;print-color-adjust:exact}
+  @page{size:A4;margin:0}
+  :root{padding:0}
+  body{background:#fff}
+  .np{display:none!important}
+  .app{display:block;padding:0;max-width:none}
+  .preview{position:static}
+  .pv-frame{padding:0;background:none;border:0}
+  #fit{height:auto!important;overflow:visible;box-shadow:none}
+  .pvin{position:static!important;transform:none!important;width:auto}
+  .paper{width:210mm;min-height:297mm}
+}
+@media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+
+</style>
 </head>
 <body class="lock">
 
@@ -97,11 +306,464 @@
 
 <div id="gate" class="np" hidden></div>
 
-<script src="assets/js/config.js"></script>
-<script src="assets/js/sample.js"></script>
-<script src="assets/js/resume.js"></script>
-<script src="assets/js/export.js"></script>
-<script src="assets/js/policy.js"></script>
-<script src="assets/js/app.js"></script>
+<script>
+/* Site-wide settings. Edit this file to change owner, contact or storage keys. */
+window.FC = window.FC || {};
+FC.config = {
+  brand: 'Resumify',
+  owner: 'Anindita Dey',
+  email: 'deyanindita606@gmail.com',
+  policyEffective: '11 October 2026',
+  storageKey: 'resumify.state.v1',
+  consentKey: 'resumify.consent.v1',
+  defaultHeading: '#2E4A62',
+  defaultText: '#1F2933',
+  ruleColour: '#9AA7B1'
+};
+
+</script>
+<script>
+/* Sample data shown on the landing page and used as the starting template. */
+FC.sample = {
+  name: 'Anindita Dey',
+  title: 'Frontend Developer',
+  email: 'anindita.dey@email.com',
+  phone: '+91 98765 43210',
+  location: 'Kolkata, India',
+  links: 'linkedin.com/in/aninditadey, github.com/aninditadey',
+  photo: '',
+  summary: 'Detail-oriented computer applications graduate with hands-on experience building responsive web apps in React. Focused on clean code, accessibility and measurable user impact.',
+  exp: [{
+    role: 'Frontend Intern',
+    company: 'Bluepeak Technologies',
+    period: 'Jun 2025 – Dec 2025',
+    points: 'Built 12 reusable React components used across 3 products\nCut page load time by 35% through code splitting and image optimisation\nCollaborated with designers to ship a new onboarding flow'
+  }],
+  edu: [{
+    degree: 'Bachelor of Computer Applications',
+    school: 'University of Calcutta',
+    year: '2023 – 2026',
+    score: 'CGPA 8.6'
+  }],
+  proj: [{
+    name: 'Campus Events Portal',
+    tech: 'React, Node.js, MongoDB',
+    desc: 'Event listing and registration platform used by 800+ students.'
+  }],
+  skills: 'JavaScript, React, HTML/CSS, Node.js, Git, SQL, Communication, Teamwork',
+  langs: 'English, Hindi, Bengali',
+  certs: 'Meta Front-End Developer Certificate (Coursera)'
+};
+
+</script>
+<script>
+/* Resume renderer: one source of truth for the preview, print, HTML and Word export. */
+(function () {
+  'use strict';
+
+  const esc = s => String(s == null ? '' : s).replace(/[&<>"']/g, c => (
+    { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]
+  ));
+  const list = t => String(t || '').split(/[,\n]/).map(x => x.trim()).filter(Boolean);
+  const sec = (title, body) => body ? `<section><h3>${title}</h3>${body}</section>` : '';
+
+  FC.TEMPLATES = [
+    ['classic', 'Classic'],
+    ['side', 'Light sidebar'],
+    ['dark', 'Colour sidebar'],
+    ['right', 'Right sidebar'],
+    ['exec', 'Minimal executive'],
+    ['banner', 'Banner header'],
+    ['bold', 'Bold headings']
+  ];
+  FC.SIDEBAR = ['side', 'dark', 'right'];
+
+  /* Stylesheet for the resume paper. Injected into the page and embedded in exports. */
+  FC.resumeCSS = `
+.paper{width:794px;min-height:1123px;background:#fff;color:var(--tx);font:13px/1.5 'Source Sans 3',Arial,sans-serif;padding:48px 52px;box-sizing:border-box;text-align:left}
+.paper *{box-sizing:border-box}
+.paper h1{font:700 34px/1.15 'Source Serif 4',Georgia,serif;color:var(--a);margin:0}
+.paper .t{font-size:16px;opacity:.78;margin:4px 0 8px;font-weight:500}
+.paper .ct{font-size:12px;opacity:.85;display:flex;flex-wrap:wrap;gap:4px 16px}
+.paper h3{font:700 12px 'Source Sans 3',Arial,sans-serif;letter-spacing:.12em;text-transform:uppercase;color:var(--a);border-bottom:1.5px solid var(--b);padding-bottom:3px;margin:20px 0 9px}
+.paper .e{margin-bottom:9px}.paper .e b{font-weight:700}.paper .m{opacity:.78;font-size:12px}
+.paper ul{margin:3px 0 0;padding-left:18px}.paper p{margin:0}
+.paper .hd{display:flex;gap:22px;align-items:center;border-bottom:3px solid var(--a);padding-bottom:16px}
+.paper .ph{width:104px;height:104px;border-radius:50%;object-fit:cover;flex:none;background:#E6EAEE;border:2px solid var(--b)}
+.paper.side,.paper.dark,.paper.right{padding:0;display:grid;grid-template-columns:250px 1fr}
+.paper.right{grid-template-columns:1fr 250px}.paper.right aside{order:2}
+.paper aside{padding:40px 24px;background:#EEF1F3}.paper .mn{padding:40px 34px}
+.paper.dark aside{background:var(--a);color:#fff}.paper.dark aside h3{color:#fff;border-color:rgba(255,255,255,.4)}
+.paper aside .ct{display:block}.paper aside .ph{display:block;margin:0 auto 22px}
+.paper.exec{font-family:'Source Serif 4',Georgia,serif;font-size:12px}.paper.exec .hd{flex-direction:column;text-align:center;border:0}.paper.exec .ct{justify-content:center}
+.paper.banner .hd{background:var(--a);margin:-48px -52px 0;padding:36px 52px;border:0}.paper.banner .hd *{color:#fff}
+.paper.bold h1{font-size:42px}.paper.bold h3{border:0;border-left:5px solid var(--a);padding:3px 0 3px 10px;background:#EEF1F3}
+`;
+
+  function injectCSS() {
+    if (document.getElementById('resume-css')) return;
+    const s = document.createElement('style');
+    s.id = 'resume-css';
+    s.textContent = FC.resumeCSS;
+    document.head.appendChild(s);
+  }
+
+  FC.renderResume = function (d, o) {
+    const a = o.hc, tx = o.tc;
+    const ph = o.mode === 'photo'
+      ? (d.photo ? `<img class="ph" src="${d.photo}" alt="">` : '<div class="ph"></div>')
+      : '';
+    const contactItems = [d.email, d.phone, d.location, ...list(d.links)].filter(Boolean);
+    const contact = contactItems.map(x => `<span>${esc(x)}</span>`).join('');
+
+    const exp = (d.exp || []).filter(e => e.role || e.company).map(e => `
+      <div class="e"><b>${esc(e.role)}</b>${e.company ? ', ' + esc(e.company) : ''}
+      <div class="m">${esc(e.period)}</div>
+      <ul>${String(e.points || '').split('\n').filter(x => x.trim()).map(x => `<li>${esc(x)}</li>`).join('')}</ul></div>`).join('');
+
+    const edu = (d.edu || []).filter(e => e.degree || e.school).map(e => `
+      <div class="e"><b>${esc(e.degree)}</b>
+      <div class="m">${[e.school, e.year, e.score].filter(Boolean).map(esc).join(' | ')}</div></div>`).join('');
+
+    const proj = (d.proj || []).filter(e => e.name).map(e => `
+      <div class="e"><b>${esc(e.name)}</b> <span class="m">${esc(e.tech)}</span><p>${esc(e.desc)}</p></div>`).join('');
+
+    const skills = list(d.skills), langs = list(d.langs);
+    const skHtml = skills.length ? skills.map(esc).join(', ') : '';
+    const lgHtml = langs.length ? langs.map(esc).join(', ') : '';
+    const certs = list(d.certs).map(x => `<p>${esc(x)}</p>`).join('');
+    const summary = d.summary ? `<p>${esc(d.summary)}</p>` : '';
+    const style = `style="--a:${a};--tx:${tx};--b:${FC.config.ruleColour}"`;
+
+    if (FC.SIDEBAR.includes(o.tpl)) {
+      return `<div class="paper ${o.tpl}" ${style}><aside>${ph}
+        <h3 style="margin-top:0">Contact</h3><div class="ct">${contactItems.map(x => `<span>${esc(x)}</span>`).join('<br>')}</div>
+        ${sec('Skills', skills.length ? `<p>${skills.map(esc).join('<br>')}</p>` : '')}
+        ${sec('Languages', lgHtml ? `<p>${lgHtml}</p>` : '')}</aside>
+        <div class="mn"><h1>${esc(d.name)}</h1><div class="t">${esc(d.title)}</div>
+        ${sec('Profile', summary)}${sec('Experience', exp)}${sec('Projects', proj)}${sec('Education', edu)}${sec('Certifications', certs)}</div></div>`;
+    }
+    return `<div class="paper ${o.tpl}" ${style}><div class="hd">${ph}<div><h1>${esc(d.name)}</h1>
+      <div class="t">${esc(d.title)}</div><div class="ct">${contact}</div></div></div>
+      ${sec('Professional Summary', summary)}${sec('Experience', exp)}${sec('Projects', proj)}${sec('Education', edu)}
+      ${sec('Skills', skHtml ? `<p>${skHtml}</p>` : '')}${sec('Certifications', certs)}${sec('Languages', lgHtml ? `<p>${lgHtml}</p>` : '')}</div>`;
+  };
+
+  FC.esc = esc;
+  FC.list = list;
+  injectCSS();
+})();
+
+</script>
+<script>
+/* Downloads: PDF (print dialog), Word (.doc) and standalone HTML. */
+(function () {
+  'use strict';
+
+  function fileName(name) {
+    const base = String(name || '').trim().replace(/[^\p{L}\p{N}]+/gu, '_').replace(/^_+|_+$/g, '');
+    return base || 'resume';
+  }
+
+  FC.download = function (kind, S) {
+    if (kind === 'pdf') {
+      const prev = document.title;
+      document.title = (S.d.name || 'Resume') + ' - Resume';
+      window.print();
+      setTimeout(() => { document.title = prev; }, 600);
+      return;
+    }
+    const word = kind === 'doc';
+    /* Word cannot render CSS grid, so sidebar layouts fall back to Classic. */
+    const tpl = word && FC.SIDEBAR.includes(S.tpl) ? 'classic' : S.tpl;
+    const css = FC.resumeCSS
+      .replace(/var\(--a\)/g, S.hc)
+      .replace(/var\(--tx\)/g, S.tc)
+      .replace(/var\(--b\)/g, FC.config.ruleColour);
+    const fonts = word ? '' : '<link rel="preconnect" href="https://fonts.googleapis.com"><link href="https://fonts.googleapis.com/css2?family=Source+Sans+3:wght@400;500;700&family=Source+Serif+4:wght@400;700&display=swap" rel="stylesheet">';
+    const html = `<!DOCTYPE html><html lang="en" xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:w="urn:schemas-microsoft-com:office:word"><head><meta charset="utf-8"><title>${FC.esc(S.d.name)}</title>${fonts}<style>@page{size:A4;margin:0}body{margin:0;background:#e9edf0}.paper{margin:0 auto}${css}@media print{body{background:#fff}}</style></head><body>${FC.renderResume(S.d, Object.assign({}, S, { tpl }))}</body></html>`;
+    const blob = new Blob([word ? '\ufeff' + html : html], { type: word ? 'application/msword' : 'text/html' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = fileName(S.d.name) + (word ? '.doc' : '.html');
+    document.body.appendChild(a);
+    a.click();
+    a.remove();
+    setTimeout(() => URL.revokeObjectURL(url), 1500);
+  };
+})();
+
+</script>
+<script>
+/* Privacy policy copy, generated from config so owner and contact stay in sync. */
+FC.policyHTML = function () {
+  const c = FC.config;
+  return `<p>This Privacy Policy explains how ${c.brand}, owned and operated by ${c.owner} ("we", "us", "our"), handles information when you use this website. ${c.brand} is a free online tool for creating resumes and CVs. By selecting "Accept and continue" you confirm that you have read and agree to this policy. If you do not agree, please do not use the site.</p>
+<h4>1. Information you enter</h4><p>To build a resume you may type in your name, professional title, email address, phone number, city and country, links (such as LinkedIn or GitHub), summary, work experience, education, projects, skills, languages and certifications. You may also upload a photo. All of this is optional and you decide what to include. You are responsible for the accuracy of what you enter and for checking it before you share your resume.</p>
+<h4>2. Where your information is kept</h4><p>${c.brand} works entirely inside your web browser. The details you enter, your chosen template and colours, and your photo (resized to a small square image) are saved only in your browser's local storage on your own device so that your work is still there when you return. We do not send this information to our servers, we do not receive a copy of it, and we cannot see, recover or delete it for you.</p>
+<h4>3. How your information is used</h4><p>Your information is used only to show the live preview and to produce the PDF, Word or HTML file when you choose to download it. Files you download are created on your device and belong to you. We do not use your information for advertising, profiling, analytics, automated decision-making or training any model, and we do not sell, rent or share it with anyone.</p>
+<h4>4. Cookies and local storage</h4><p>We do not use advertising or tracking cookies. We use your browser's local storage for two purposes only: to save your resume progress and to remember that you accepted this policy. Both stay on your device.</p>
+<h4>5. Third-party services</h4><ul><li><b>Google Fonts.</b> The site loads its typefaces from Google Fonts. When the page loads, Google may receive your IP address and basic browser details, under Google's own privacy policy.</li><li><b>Hosting.</b> The site is served by a hosting provider (Vercel), which may keep standard technical logs such as IP address, browser type and the pages requested, for security and reliability. Your resume content is not part of these requests.</li><li><b>HTML downloads.</b> An HTML file you download links to Google Fonts in the same way when you open it online.</li></ul>
+<h4>6. Photos and sensitive details</h4><p>A photo is optional. Many employers and countries recommend leaving it out, so include one only if you are comfortable doing so. Avoid entering sensitive personal details that are not needed on a resume, such as government ID numbers, bank details or passwords.</p>
+<h4>7. Sharing your resume</h4><p>When you send a downloaded resume to an employer, recruiter or anyone else, the information in it is handled under their policies, not ours. We are not responsible for how others use a file you choose to share.</p>
+<h4>8. Security</h4><p>Because your data stays on your device, its safety also depends on your device and browser. Do not use shared or public computers for personal details, or clear your browser data when you finish. You can use "Clear my data" in the last step of the builder to remove everything ${c.brand} has saved in your browser.</p>
+<h4>9. Your choices and rights</h4><p>You can edit your information at any time, remove your photo, clear all saved data, or delete it by clearing your browser's site data. Because we do not hold your data, there is nothing stored on our side to access, correct or erase. If you have a privacy question or request, please contact us using the details below.</p>
+<h4>10. Children</h4><p>${c.brand} is not directed at children under 18, and we do not knowingly collect information from them. Anyone under 18 should use the site with a parent or guardian.</p>
+<h4>11. Changes to this policy</h4><p>We may update this policy from time to time, for example if the site adds new features. The effective date at the top shows the latest version, and you may be asked to accept it again after a significant change.</p>
+<h4>12. Contact</h4><p>${c.owner}<br>Email: <a href="mailto:${c.email}">${c.email}</a><br>If you face any problem or have any question about this policy, contact us at this address.</p>`;
+};
+
+</script>
+<script>
+/* Resumify application: state, wizard form, live preview, privacy gate. */
+(function () {
+  'use strict';
+
+  const { config: C, esc, TEMPLATES, renderResume } = FC;
+  const $ = (s, r = document) => r.querySelector(s);
+  const clone = o => JSON.parse(JSON.stringify(o));
+
+  const STEPS = ['Personal', 'Experience', 'Education', 'Skills', 'Style and download'];
+  const PRESETS = [
+    ['#2E4A62', 'Slate blue'], ['#2B2F36', 'Charcoal'], ['#6B2D3A', 'Burgundy'],
+    ['#2F5D55', 'Pine'], ['#6F4E37', 'Umber']
+  ];
+  const blank = () => ({
+    name: '', title: '', email: '', phone: '', location: '', links: '', photo: '', summary: '',
+    exp: [{}], edu: [{}], proj: [{}], skills: '', langs: '', certs: ''
+  });
+  const fresh = () => ({ v: 1, mode: 'nophoto', tpl: 'classic', hc: C.defaultHeading, tc: C.defaultText, step: 0, d: clone(FC.sample) });
+
+  /* ---------- State ---------- */
+  let S = fresh();
+  try {
+    const saved = JSON.parse(localStorage.getItem(C.storageKey) || 'null');
+    if (saved && saved.v === 1 && saved.d) {
+      S = Object.assign(fresh(), saved);
+      S.d = Object.assign(blank(), saved.d);
+      ['exp', 'edu', 'proj'].forEach(k => { if (!Array.isArray(S.d[k])) S.d[k] = [{}]; });
+      S.step = Math.min(Math.max(+S.step || 0, 0), STEPS.length - 1);
+    }
+  } catch (e) { /* storage unavailable or corrupt: start fresh */ }
+
+  let saveTimer;
+  const save = () => {
+    clearTimeout(saveTimer);
+    saveTimer = setTimeout(() => {
+      try { localStorage.setItem(C.storageKey, JSON.stringify(S)); } catch (e) { /* ignore quota or privacy mode */ }
+    }, 200);
+  };
+
+  /* ---------- Preview ---------- */
+  function scaleTo(box, inner, setHeight) {
+    if (!box || !box.clientWidth) return;
+    const k = Math.min(1, box.clientWidth / 794);
+    inner.style.transform = `scale(${k})`;
+    if (setHeight) box.style.height = Math.round(inner.offsetHeight * k) + 'px';
+  }
+  const fitAll = () => { scaleTo($('#fit'), $('#pv'), true); scaleTo($('#sheet'), $('#sheetIn'), false); };
+
+  let raf;
+  function renderPreview() {
+    cancelAnimationFrame(raf);
+    raf = requestAnimationFrame(() => {
+      $('#pv').innerHTML = renderResume(S.d, S);
+      const t = TEMPLATES.find(x => x[0] === S.tpl);
+      $('#tplName').textContent = t ? t[1] : '';
+      fitAll();
+    });
+    save();
+  }
+
+  /* ---------- Form builders ---------- */
+  const field = (label, key, type = 'text') =>
+    `<label class="fld"><span>${label}</span><input type="${type}" data-k="${key}" value="${esc(S.d[key])}"></label>`;
+  const area = (label, key) =>
+    `<label class="fld"><span>${label}</span><textarea data-k="${key}">${esc(S.d[key])}</textarea></label>`;
+
+  function group(name, title, fields, noun, hint) {
+    const items = S.d[name].map((it, i) => `
+      <div class="item">
+        <div class="item-head"><b>${noun} ${i + 1}</b><button class="rm" type="button" data-rm="${name}:${i}">Remove</button></div>
+        ${fields.map(([k, l, big]) => big
+          ? `<label class="fld"><span>${l}</span><textarea data-l="${name}" data-i="${i}" data-k="${k}">${esc(it[k])}</textarea></label>`
+          : `<label class="fld"><span>${l}</span><input data-l="${name}" data-i="${i}" data-k="${k}" value="${esc(it[k])}"></label>`).join('')}
+      </div>`).join('');
+    return `<h2 class="${hint === 'sub' ? 'sub' : ''}">${title}</h2>${hint && hint !== 'sub' ? `<p class="hint">${hint}</p>` : ''}${items}
+      <button class="btn sm" type="button" data-add="${name}">Add ${noun.toLowerCase()}</button>`;
+  }
+
+  function renderForm() {
+    const s = S.step;
+    let h = '';
+    if (s === 0) {
+      h = `<h2>Personal details</h2><p class="hint">This is the header of your resume.</p>
+        ${S.mode === 'photo' ? `<label class="fld"><span>Photo</span><input type="file" accept="image/*" id="pic"></label>
+          ${S.d.photo ? '<div class="photo-row"><span class="small">Photo added.</span><button class="linkbtn" type="button" data-act="rmpic">Remove photo</button></div>' : ''}` : ''}
+        ${field('Full name', 'name')}${field('Professional title', 'title')}
+        <div class="row2">${field('Email', 'email', 'email')}${field('Phone', 'phone', 'tel')}</div>
+        ${field('City, country', 'location')}
+        ${field('Links (LinkedIn, GitHub, portfolio), separated by commas', 'links')}
+        ${area('Professional summary', 'summary')}`;
+    }
+    if (s === 1) {
+      h = group('exp', 'Work experience and internships',
+        [['role', 'Role'], ['company', 'Company'], ['period', 'Duration'], ['points', 'Achievements (one per line)', 1]],
+        'Experience', 'Start with your most recent role. Lead each line with what you achieved.');
+    }
+    if (s === 2) {
+      h = group('edu', 'Education',
+        [['degree', 'Degree'], ['school', 'University or college'], ['year', 'Year'], ['score', 'CGPA or percentage']], 'Education') +
+        group('proj', 'Projects',
+        [['name', 'Title'], ['tech', 'Tech used'], ['desc', 'Description', 1]], 'Project', 'sub');
+    }
+    if (s === 3) {
+      h = `<h2>Skills and extras</h2><p class="hint">Use the words that appear in the job description where they are true for you.</p>
+        ${area('Skills (comma separated)', 'skills')}${area('Languages known', 'langs')}${area('Certifications (one per line)', 'certs')}`;
+    }
+    if (s === 4) {
+      h = `<h2>Template</h2>
+        <div class="chips">${TEMPLATES.map(([k, n]) => `<button class="chip ${S.tpl === k ? 'on' : ''}" type="button" data-tpl="${k}" aria-pressed="${S.tpl === k}">${n}</button>`).join('')}</div>
+        <h2 class="sub">Colours</h2>
+        <div class="row2"><label class="fld"><span>Heading colour</span><input type="color" data-c="hc" value="${S.hc}"></label>
+        <label class="fld"><span>Text colour</span><input type="color" data-c="tc" value="${S.tc}"></label></div>
+        <div class="swatches">${PRESETS.map(([c, n]) => `<button class="sw ${S.hc.toLowerCase() === c.toLowerCase() ? 'on' : ''}" type="button" data-p="${c}" style="background:${c}" aria-label="Heading colour: ${n}"></button>`).join('')}</div>
+        <h2 class="sub">Download</h2>
+        <div class="dl"><button class="btn primary" type="button" data-dl="pdf">PDF</button>
+        <button class="btn" type="button" data-dl="doc">Word</button><button class="btn" type="button" data-dl="html">HTML</button></div>
+        <p class="small">For PDF, choose <b>Save as PDF</b> in the print dialog, with paper size A4 and margins set to none. Word opens as an editable .doc in a single-column layout.</p>
+        <p class="small"><button class="linkbtn" type="button" data-act="clear">Clear my data</button> removes everything saved in this browser.</p>`;
+    }
+    $('#fm').innerHTML = h;
+    $('#stepper').innerHTML = STEPS.map((x, i) => `<li><button type="button" data-step="${i}" class="${i === s ? 'on' : i < s ? 'done' : ''}" ${i === s ? 'aria-current="step"' : ''}><span class="n">${i < s ? '&#10003;' : i + 1}</span><span class="lb">${x}</span></button></li>`).join('');
+    $('#bk').style.visibility = s ? 'visible' : 'hidden';
+    $('#nx').style.display = s === STEPS.length - 1 ? 'none' : 'inline-flex';
+  }
+
+  function goStep(n) {
+    S.step = Math.min(Math.max(n, 0), STEPS.length - 1);
+    renderForm();
+    save();
+    const p = $('.panel');
+    if (p && p.getBoundingClientRect().top < 0) p.scrollIntoView({ block: 'start' });
+  }
+
+  /* ---------- Views ---------- */
+  function show(name) {
+    ['home', 'format', 'app'].forEach(k => { $('#v-' + k).hidden = k !== name; });
+    if (name === 'app') { renderForm(); renderPreview(); }
+    window.scrollTo(0, 0);
+    fitAll();
+  }
+
+  /* ---------- Events ---------- */
+  document.addEventListener('click', e => {
+    const t = e.target.closest('button,a');
+    if (!t) return;
+    const d = t.dataset;
+
+    if (d.go) show(d.go);
+    if (d.mode) { S.mode = d.mode; S.step = 0; show('app'); }
+    if (t.id === 'home') show('home');
+    if (t.id === 'nx') goStep(S.step + 1);
+    if (t.id === 'bk') goStep(S.step - 1);
+    if (d.step !== undefined) goStep(+d.step);
+
+    if (d.add) { S.d[d.add].push({}); renderForm(); renderPreview(); }
+    if (d.rm) {
+      const [n, i] = d.rm.split(':');
+      S.d[n].splice(+i, 1);
+      if (!S.d[n].length) S.d[n].push({});
+      renderForm(); renderPreview();
+    }
+    if (d.tpl) { S.tpl = d.tpl; renderForm(); renderPreview(); }
+    if (d.p) { S.hc = d.p; renderForm(); renderPreview(); }
+    if (d.dl) FC.download(d.dl, S);
+    if (d.act === 'rmpic') { S.d.photo = ''; renderForm(); renderPreview(); }
+    if (d.act === 'clear' && confirm('Clear everything you entered in this browser? This cannot be undone.')) {
+      S = fresh(); S.d = blank(); S.step = 0;
+      try { localStorage.removeItem(C.storageKey); } catch (x) { /* ignore */ }
+      renderForm(); renderPreview();
+    }
+
+    /* Privacy gate */
+    if (t.id === 'acc') {
+      try { localStorage.setItem(C.consentKey, '1'); } catch (x) { /* ignore */ }
+      document.body.classList.remove('lock');
+      gate.hidden = true;
+      fitAll();
+    }
+    if (t.id === 'deny') {
+      gate.innerHTML = `<div class="dlg" role="alertdialog" aria-modal="true" aria-labelledby="dt"><h2 id="dt">Access denied</h2>
+        <p style="margin:12px 0 18px">You chose not to accept the Privacy Policy, so ${C.brand} cannot be opened. You can review the policy again if you change your mind.</p>
+        <div class="btns"><button class="btn primary" id="again" type="button">Review policy</button></div></div>`;
+      $('#again').focus();
+    }
+    if (t.id === 'again') openPolicy('consent');
+    if (t.id === 'cls') gate.hidden = true;
+    if (t.id === 'pp') { e.preventDefault(); openPolicy('view'); }
+  });
+
+  document.addEventListener('input', e => {
+    const t = e.target, d = t.dataset;
+    if (d.c) { S[d.c] = t.value; renderPreview(); return; }
+    if (!d.k) return;
+    if (d.l) S.d[d.l][+d.i][d.k] = t.value; else S.d[d.k] = t.value;
+    renderPreview();
+  });
+
+  document.addEventListener('change', e => {
+    const f = e.target.id === 'pic' && e.target.files[0];
+    if (!f) return;
+    const r = new FileReader();
+    r.onload = () => {
+      const im = new Image();
+      im.onload = () => {
+        const c = document.createElement('canvas'), z = Math.min(im.width, im.height);
+        c.width = c.height = 320;
+        c.getContext('2d').drawImage(im, (im.width - z) / 2, (im.height - z) / 2, z, z, 0, 0, 320, 320);
+        S.d.photo = c.toDataURL('image/jpeg', 0.85);
+        renderForm(); renderPreview();
+      };
+      im.src = r.result;
+    };
+    r.readAsDataURL(f);
+  });
+
+  document.addEventListener('keydown', e => {
+    if (e.key === 'Escape' && !gate.hidden && !document.body.classList.contains('lock')) gate.hidden = true;
+  });
+  addEventListener('resize', fitAll);
+  addEventListener('orientationchange', () => setTimeout(fitAll, 150));
+  if (window.ResizeObserver) { const ro = new ResizeObserver(fitAll); const w = document.querySelector('.pv-frame'); if (w) ro.observe(w); }
+
+  /* ---------- Privacy policy ---------- */
+  const gate = $('#gate');
+  function openPolicy(mode) {
+    gate.hidden = false;
+    gate.innerHTML = `<div class="dlg" role="dialog" aria-modal="true" aria-labelledby="gt"><h2 id="gt">Privacy Policy</h2>
+      <p class="sm">Effective ${C.policyEffective}</p><div class="pt">${FC.policyHTML()}</div>
+      <div class="btns">${mode === 'consent'
+        ? '<button class="btn" id="deny" type="button">Deny</button><button class="btn primary" id="acc" type="button">Accept and continue</button>'
+        : '<button class="btn primary" id="cls" type="button">Close</button>'}</div></div>`;
+    const first = $(mode === 'consent' ? '#acc' : '#cls');
+    if (first) first.focus();
+  }
+
+  /* ---------- Init ---------- */
+  $('#yr').textContent = new Date().getFullYear();
+  $('#owner').textContent = C.owner;
+  $('#mail').textContent = C.email;
+  $('#mail').href = 'mailto:' + C.email;
+  $('#sheetIn').innerHTML = renderResume(FC.sample, { tpl: 'classic', hc: C.defaultHeading, tc: C.defaultText, mode: 'nophoto' });
+
+  let consented = false;
+  try { consented = localStorage.getItem(C.consentKey) === '1'; } catch (x) { /* ignore */ }
+  if (consented) { document.body.classList.remove('lock'); fitAll(); } else openPolicy('consent');
+  if (document.fonts && document.fonts.ready) document.fonts.ready.then(fitAll);
+})();
+
+</script>
 </body>
 </html>
