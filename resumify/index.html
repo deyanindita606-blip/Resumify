@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Resumify | Resume and CV builder</title>
+<meta name="description" content="Build an ATS-friendly resume or CV with or without a photo. Pick a layout, set your colours and download as PDF, Word or HTML. Your details never leave your browser.">
+<meta name="theme-color" content="#2E4A62">
+<link rel="icon" type="image/svg+xml" href="assets/favicon.svg">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Schibsted+Grotesk:wght@400;500;600;700&family=Source+Sans+3:wght@400;500;700&family=Source+Serif+4:wght@400;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/css/styles.css">
+</head>
+<body class="lock">
+
+<header class="top np">
+  <div class="wrap top-in">
+    <a class="logo" href="./" aria-label="Resumify home"><span class="mark" aria-hidden="true">R</span>Resumify</a>
+    <button class="btn quiet" id="home" type="button">Start over</button>
+  </div>
+</header>
+
+<!-- Home -->
+<main id="v-home" class="np">
+  <div class="wrap hero">
+    <div class="hero-copy">
+      <h1>Write your resume once. Let the layout take care of itself.</h1>
+      <p>Enter your details and Resumify sets them in a clean page with real, selectable text, the kind applicant tracking systems read correctly.</p>
+      <div class="hero-actions">
+        <button class="btn primary lg" type="button" data-go="format">Build my resume</button>
+        <span class="note">Free. No sign-up.</span>
+      </div>
+    </div>
+    <div class="stack" aria-hidden="true"><div class="sheet" id="sheet"><div class="pvin" id="sheetIn"></div></div></div>
+  </div>
+  <div class="wrap">
+    <dl class="facts">
+      <div><dt>Seven layouts</dt><dd>Classic, sidebar, executive, banner and more, each in your own colours.</dd></div>
+      <div><dt>Text that screens can read</dt><dd>Nothing is flattened into an image, so parsers read your resume as you wrote it.</dd></div>
+      <div><dt>Stays on your device</dt><dd>Your details are kept in this browser. Nothing is uploaded to a server.</dd></div>
+      <div><dt>PDF, Word or HTML</dt><dd>Download the format each employer asks for.</dd></div>
+    </dl>
+  </div>
+</main>
+
+<!-- Format -->
+<main id="v-format" class="np" hidden>
+  <div class="wrap">
+    <div class="page-head">
+      <h1>Choose a format</h1>
+      <p>You can switch template and colours later. This only decides whether the header has room for a portrait.</p>
+    </div>
+    <div class="formats">
+      <button class="format" type="button" data-mode="nophoto">
+        <span class="mini" aria-hidden="true"><i class="l1"></i><i class="l2"></i><i class="l3"></i><i class="l3"></i><i class="l2"></i></span>
+        <span class="format-body"><strong>Resume without photo</strong>
+        <span>Compact and neutral. Suited to corporate and international roles.</span></span>
+      </button>
+      <button class="format" type="button" data-mode="photo">
+        <span class="mini" aria-hidden="true"><i class="pic"></i><i class="l1 s"></i><i class="l2"></i><i class="l3"></i><i class="l3"></i></span>
+        <span class="format-body"><strong>Resume with photo</strong>
+        <span>Upload a portrait. It is cropped to a circle and placed in the header, as many CVs expect.</span></span>
+      </button>
+    </div>
+  </div>
+</main>
+
+<!-- Builder -->
+<main id="v-app" hidden>
+  <div class="wrap app">
+    <section class="panel np" aria-label="Resume details">
+      <ol class="stepper" id="stepper"></ol>
+      <div id="fm" class="fm"></div>
+      <div class="actions">
+        <button class="btn quiet" id="bk" type="button">Back</button>
+        <button class="btn primary" id="nx" type="button">Next</button>
+      </div>
+    </section>
+    <aside class="preview" aria-label="Live preview">
+      <div class="pv-head np"><span>Live preview</span><span id="tplName"></span></div>
+      <div class="pv-frame"><div id="fit"><div class="pvin" id="pv"></div></div></div>
+    </aside>
+  </div>
+</main>
+
+<footer class="np">
+  <div class="wrap foot">
+    <div>
+      <span class="logo sm"><span class="mark" aria-hidden="true">R</span>Resumify</span>
+      <p>&copy; <span id="yr"></span> Resumify. Owned and operated by <b id="owner"></b>. All rights reserved.</p>
+      <p><a href="#" id="pp">Privacy Policy</a></p>
+    </div>
+    <div><p>If you face any problem, contact us at <a id="mail" href="#"></a>.</p></div>
+  </div>
+</footer>
+
+<div id="gate" class="np" hidden></div>
+
+<script src="assets/js/config.js"></script>
+<script src="assets/js/sample.js"></script>
+<script src="assets/js/resume.js"></script>
+<script src="assets/js/export.js"></script>
+<script src="assets/js/policy.js"></script>
+<script src="assets/js/app.js"></script>
+</body>
+</html>

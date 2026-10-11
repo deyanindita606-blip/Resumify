@@ -1,0 +1,12 @@
+{
+  "name": "resumify",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Privacy-first resume and CV builder. Static site, no build step.",
+  "scripts": {
+    "dev": "npx --yes serve . -l 3000",
+    "check": "node --check assets/js/config.js && node --check assets/js/sample.js && node --check assets/js/resume.js && node --check assets/js/export.js && node --check assets/js/policy.js && node --check assets/js/app.js"
+  },
+  "author": "Anindita Dey",
+  "license": "MIT"
+}
